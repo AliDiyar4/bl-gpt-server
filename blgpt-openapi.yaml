@@ -2,19 +2,25 @@ openapi: 3.0.0
 info:
   title: BL-GPT Binance Price API
   version: 1.0.0
+  description: |
+    Bu API, Binance üzerinden coin fiyatlarını BL-GPT için sunar.
+    Kullanıcı bir coin sembolü girerek fiyat verisine ulaşabilir.
+
 servers:
-  - url: http://localhost:3000
+  - url: https://bl-gpt-server.onrender.com
+
 paths:
   /price/{symbol}:
     get:
-      summary: Coin fiyatını getir
+      operationId: getPrice
+      summary: Belirli bir coin’in Binance fiyatını getir.
       parameters:
         - in: path
           name: symbol
           required: true
           schema:
             type: string
-          description: Coin sembolü (örnek: BTCUSDT)
+          description: Coin sembolü (örneğin BTCUSDT)
       responses:
         '200':
           description: Fiyat bilgisi
@@ -27,3 +33,15 @@ paths:
                     type: string
                   price:
                     type: string
+        '500':
+          description: Hata durumunda mesaj
+
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      properties:
+        coin:
+          type: string
+        price:
+          type: string
