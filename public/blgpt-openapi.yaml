@@ -331,7 +331,7 @@ paths:
                       type: integer
                       example: 5
 
-  /analyze/full:   # 👈 Doğru hizalanmış!
+  /analyze/full:
     get:
       summary: Gelişmiş analiz – 12 göstergeye göre en uygun coinleri getir
       responses:
@@ -357,6 +357,7 @@ paths:
                       type: array
                       items:
                         type: string
+
   /news/{symbol}:
     get:
       summary: Binance Blog'dan belirli bir coin ile ilgili haberleri getir
@@ -367,7 +368,6 @@ paths:
           required: true
           schema:
             type: string
-          example: SOL
       responses:
         '200':
           description: Coin ile ilgili en güncel haberler
@@ -389,4 +389,5 @@ paths:
                       example: "https://www.binance.com/en/blog/post1234"
                     date:
                       type: string
+                      format: date-time
                       example: "2025-07-25T08:30:00Z"
