@@ -310,3 +310,50 @@ paths:
                     type: integer
                   whaleHoldingPercent:
                     type: number
+  /analyze/top:
+    get:
+      summary: En güçlü long sinyali veren coinleri getir
+      description: RSI, MACD, EMA, Bollinger ve Temel analiz skorlarına göre en uygun 3 coini listeler
+      responses:
+        '200':
+          description: En yüksek puanlı ilk 3 coin
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    coin:
+                      type: string
+                      example: "SOLUSDT"
+                    score:
+                      type: integer
+                      example: 5
+
+  /analyze/full:   # 👈 Doğru hizalanmış!
+    get:
+      summary: Gelişmiş analiz – 12 göstergeye göre en uygun coinleri getir
+      responses:
+        '200':
+          description: En güçlü sinyale sahip 5 coin
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    coin:
+                      type: string
+                      example: SOLUSDT
+                    direction:
+                      type: string
+                      enum: [long, short]
+                    score:
+                      type: integer
+                      example: 7
+                    reasons:
+                      type: array
+                      items:
+                        type: string
