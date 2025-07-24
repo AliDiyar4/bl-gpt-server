@@ -1,9 +1,13 @@
 const express = require('express');
 const axios = require('axios');
+const path = require('path'); // ✅ Bu eksikti
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ✅ Render uyumu için process.env.PORT
 
-app.use(require('cors')());
+// ✅ Public klasörü servis et (OpenAPI dosyası burada olmalı)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 🔥 BL-GPT API Endpointleri 🔥
 
 // Fiyat Verisi
 app.get('/price/:symbol', async (req, res) => {
@@ -17,26 +21,25 @@ app.get('/price/:symbol', async (req, res) => {
 });
 
 // RSI
-app.get('/rsi/:symbol', async (req, res) => {
+app.get('/rsi/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
-    // Sahte değer (örnek), gerçek RSI hesaplaması için veri çekimi gerekir
     res.json({ coin: symbol, rsi: 58.2 });
 });
 
 // MACD
-app.get('/macd/:symbol', async (req, res) => {
+app.get('/macd/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
     res.json({ coin: symbol, macd: 'Pozitif kesişim' });
 });
 
 // EMA (9/21)
-app.get('/ema/:symbol', async (req, res) => {
+app.get('/ema/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
     res.json({ coin: symbol, ema9: 124.5, ema21: 122.3 });
 });
 
 // Bollinger Band
-app.get('/bollinger/:symbol', async (req, res) => {
+app.get('/bollinger/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
     res.json({
         coin: symbol,
@@ -48,12 +51,12 @@ app.get('/bollinger/:symbol', async (req, res) => {
 });
 
 // ATR
-app.get('/atr/:symbol', async (req, res) => {
+app.get('/atr/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
     res.json({ coin: symbol, atr: 3.28 });
 });
 
-// Order Book (Örnek veri)
+// Order Book
 app.get('/orderbook/:symbol', async (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
     try {
@@ -87,19 +90,19 @@ app.get('/volume/:symbol', async (req, res) => {
 });
 
 // Volatilite
-app.get('/volatility/:symbol', async (req, res) => {
+app.get('/volatility/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
-    res.json({ coin: symbol, volatility: 'Orta' }); // Gerçek hesaplama ayrı yapılır
+    res.json({ coin: symbol, volatility: 'Orta' });
 });
 
 // Risk Skoru
-app.get('/risk/:symbol', async (req, res) => {
+app.get('/risk/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
     res.json({ coin: symbol, riskScore: 3.7 });
 });
 
-// Temel Analiz (Örnek veri)
-app.get('/fundamentals/:symbol', async (req, res) => {
+// Temel Analiz
+app.get('/fundamentals/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
     res.json({
         coin: symbol,
@@ -107,8 +110,8 @@ app.get('/fundamentals/:symbol', async (req, res) => {
     });
 });
 
-// On-Chain Analiz (Örnek veri)
-app.get('/onchain/:symbol', async (req, res) => {
+// On-Chain Analiz
+app.get('/onchain/:symbol', (req, res) => {
     const symbol = req.params.symbol.toUpperCase();
     res.json({
         coin: symbol,
