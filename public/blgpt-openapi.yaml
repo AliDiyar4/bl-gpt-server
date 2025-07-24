@@ -1,26 +1,19 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
-  title: BL-GPT Binance Price API
+  title: BL-GPT Binance Analysis API
   version: 1.0.0
-  description: |
-    Bu API, Binance üzerinden coin fiyatlarını BL-GPT için sunar.
-    Kullanıcı bir coin sembolü girerek fiyat verisine ulaşabilir.
-
 servers:
   - url: https://bl-gpt-server.onrender.com
-
 paths:
   /price/{symbol}:
     get:
-      operationId: getPrice
-      summary: Belirli bir coin’in Binance fiyatını getir.
+      summary: Coin fiyatını getir
       parameters:
         - in: path
           name: symbol
           required: true
           schema:
             type: string
-          description: Coin sembolü (örneğin BTCUSDT)
       responses:
         '200':
           description: Fiyat bilgisi
@@ -33,15 +26,287 @@ paths:
                     type: string
                   price:
                     type: string
-        '500':
-          description: Hata durumunda mesaj
 
-components:
-  schemas:
-    PriceResponse:
-      type: object
-      properties:
-        coin:
-          type: string
-        price:
-          type: string
+  /rsi/{symbol}:
+    get:
+      summary: RSI verisi getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: RSI değeri
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  rsi:
+                    type: number
+
+  /macd/{symbol}:
+    get:
+      summary: MACD sinyali getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: MACD verisi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  macd:
+                    type: string
+
+  /ema/{symbol}:
+    get:
+      summary: EMA 9 ve 21 değerlerini getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: EMA verileri
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  ema9:
+                    type: number
+                  ema21:
+                    type: number
+
+  /bollinger/{symbol}:
+    get:
+      summary: Bollinger bandı verilerini getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Bollinger verisi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  upper:
+                    type: number
+                  middle:
+                    type: number
+                  lower:
+                    type: number
+                  breakout:
+                    type: string
+
+  /atr/{symbol}:
+    get:
+      summary: ATR verisini getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ATR değeri
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  atr:
+                    type: number
+
+  /orderbook/{symbol}:
+    get:
+      summary: Order book verisini getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Alış-satış emirleri
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  bids:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: string
+                  asks:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: string
+
+  /funding/{symbol}:
+    get:
+      summary: Funding rate getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Funding rate değeri
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  fundingRate:
+                    type: string
+
+  /volume/{symbol}:
+    get:
+      summary: Hacim verisi getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Hacim bilgisi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  volume:
+                    type: string
+
+  /volatility/{symbol}:
+    get:
+      summary: Volatilite seviyesini getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Volatilite bilgisi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  volatility:
+                    type: string
+
+  /risk/{symbol}:
+    get:
+      summary: Risk skoru getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Risk skoru
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  riskScore:
+                    type: number
+
+  /fundamentals/{symbol}:
+    get:
+      summary: Temel analiz özeti getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Temel analiz bilgisi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  summary:
+                    type: string
+
+  /onchain/{symbol}:
+    get:
+      summary: Zincir üstü verileri getir
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: On-chain veriler
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coin:
+                    type: string
+                  activeAddresses:
+                    type: integer
+                  whaleHoldingPercent:
+                    type: number
