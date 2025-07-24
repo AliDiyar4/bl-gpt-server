@@ -1,3 +1,5 @@
+const Parser = require('rss-parser'); // index.js en üstüne
+const parser = new Parser();
 const express = require('express');
 const axios = require('axios');
 const path = require('path'); // ✅ Bu eksikti
@@ -118,6 +120,31 @@ app.get('/onchain/:symbol', (req, res) => {
         activeAddresses: 153200,
         whaleHoldingPercent: 42.5
     });
+});
+// Binance Haberleri - Coin bazlı
+app.get('/news/:symbol', async (req, res) => {
+    const { symbol } = req.params;
+    const upper = symbol.toUpperCase();
+
+    try {
+        const feed = await parser.parseURL('https://www.binance.com/en/blog/rss');
+        const filtered = feed.items.filter(item =>
+            item.title.toUpperCase().includes(upper) ||
+            item.contentSnippet.toUpperCase().includes(upper)
+        );
+
+        const result = filtered.slice(0, 5).map(item => ({
+            title: item.title,
+            summary: item.contentSnippet,
+            link: item.link,
+            date: item.pubDate
+        }));
+
+        res.json(result);
+    } catch (err) {
+        console.error('❌ Haber çekilemedi:', err.message);
+        res.status(500).json({ error: 'Binance haberleri alınamadı.' });
+    }
 });
 // Uygun Coinleri Getir (En güçlü long sinyali olan)
 app.get('/analyze/top', async (req, res) => {

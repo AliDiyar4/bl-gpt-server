@@ -357,3 +357,36 @@ paths:
                       type: array
                       items:
                         type: string
+  /news/{symbol}:
+    get:
+      summary: Binance Blog'dan belirli bir coin ile ilgili haberleri getir
+      description: Coin ismine göre Binance resmi blog RSS'inden filtrelenmiş en güncel haberleri listeler.
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+          example: SOL
+      responses:
+        '200':
+          description: Coin ile ilgili en güncel haberler
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: "Solana: Yeni Gelişmeler"
+                    summary:
+                      type: string
+                      example: "Solana ekibi tarafından açıklanan yeni staking sistemi..."
+                    link:
+                      type: string
+                      example: "https://www.binance.com/en/blog/post1234"
+                    date:
+                      type: string
+                      example: "2025-07-25T08:30:00Z"
